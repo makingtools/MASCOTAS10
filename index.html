@@ -111,18 +111,30 @@
 }
 </script>
 
-<!-- Babel for in-browser JSX/TSX transpilation -->
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
+<!-- 
+  IMPORT MAP PARA TRANSPILACIÓN EN TIEMPO REAL
+  ------------------------------------------------
+  Este import map es la clave para que el proyecto funcione en GitHub Pages sin un paso de compilación.
+  - Usa `esm.sh` para cargar paquetes de npm como React.
+  - CRÍTICO: Remapea todas las importaciones de archivos locales (que empiezan con './') para que se obtengan 
+    del repositorio de GitHub a través de esm.sh. El servicio `esm.sh/gh/...` transpila TypeScript/TSX 
+    al instante y lo sirve con el tipo de contenido (MIME type) de JavaScript correcto, 
+    solucionando así los errores que se veían en GitHub Pages.
+  - ATENCIÓN: La ruta del repositorio 'makingtools/MASCOTAS10@main' está escrita directamente aquí.
+    Si cambias tu nombre de usuario de GitHub, el nombre del repositorio o la rama por defecto,
+    DEBES actualizar esta ruta.
+-->
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.1.1/",
-    "react": "https://esm.sh/react@^19.1.1",
+    "react": "https://esm.sh/react@19.0.0-rc.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0-rc.0/client",
+    "recharts": "https://esm.sh/recharts@3.1.2",
+    "@google/genai": "https://esm.sh/@google/genai@1.13.0",
+    "uuid": "https://esm.sh/uuid@11.1.0",
+    "./": "https://esm.sh/gh/makingtools/MASCOTAS10@main/",
     "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
-    "recharts": "https://esm.sh/recharts@^3.1.2",
-    "@google/genai": "https://esm.sh/@google/genai@^1.13.0",
-    "uuid": "https://esm.sh/uuid@^11.1.0"
+    "react/": "https://esm.sh/react@^19.1.1/"
   }
 }
 </script>
@@ -130,8 +142,8 @@
 </head>
 <body>
     <div id="root"></div>
-    <!-- Application Entry Point (to be transpiled by Babel) -->
-    <script type="text/babel" data-presets="react,typescript" data-type="module" src="./index.tsx"></script>
+    <!-- Punto de entrada de la aplicación. Ahora es un módulo estándar, sin necesidad de Babel. -->
+    <script type="module" src="./index.tsx"></script>
 <script type="module" src="/index.tsx"></script>
 </body>
 </html>
